@@ -16,17 +16,51 @@ def intro():
         window.close()
         return values[0]
     
+def get_youtube_creds():
+    sg.theme('SystemDefaultForReal')
+    layout = [  [sg.Text('Enter your youtube API credentials')],
+                [sg.Text('Credentials', size=(15, 1)), sg.InputText()],      
+                [sg.Text('Credentials', size=(15, 1)), sg.InputText()],      
+                [sg.Text('Credentials', size=(15, 1)), sg.InputText()],  
+                [sg.Button('Next'), sg.Button('Cancel')] ]
+    window = sg.Window('TikBot ', layout, icon = logo )
+    while True:
+        event, values = window.read()
+        if event in (None, 'Cancel'): 
+            break
+        
+        window.close()
+        return values[0]
+
+def get_local_path():
+    sg.theme('SystemDefaultForReal')
+    layout = [
+                 [sg.Text('Choose A Folder to Download your compilation', size=(35, 1))],      
+                 [sg.Text('Your Folder', size=(15, 1), auto_size_text=False, justification='right'),      
+                  sg.InputText('Default Folder'), sg.FolderBrowse()], 
+                [sg.Submit(tooltip='Click to submit this window'), sg.Cancel()] ]
+    window = sg.Window('TikBot ', layout, icon = logo )
+    while True:
+        event, values = window.read()
+        if event in (None, 'Cancel'): 
+            break
+        
+        window.close()
+        return values[0]
+    
+def pop(msg = 'Something went wrong'):
+    sg.popup('Error:', msg)
+    
 def main():
     decision = intro()
     if decision:
-        print('does one thing')
+        get_youtube_creds()
+        pop()
     else:
         print('does another')
+        get_local_path()
+        pop()
     
     
 main()
-
-
-
-
 
