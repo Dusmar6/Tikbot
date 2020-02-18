@@ -1,4 +1,5 @@
 import random
+import time
 
 # Memes that _verb my _noun
 # Tiktoks that _verb my _noun
@@ -68,8 +69,9 @@ def generate_title():
     else:
         print("Tiktoks that make " + random.choice(names) + " respect the drip")
 
-
-generate_title()
+while True: 
+    time.sleep(0.2)
+    generate_title()
 
 # print all phrases at once
 # print("Tiktoks that " + random.choice(verbs) + " my " + random.choice(nouns))
