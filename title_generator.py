@@ -26,15 +26,20 @@ nouns = [
     'laser beams',
     'dingle berry',
     'creamy goodness',
-    'moistness'
+    'moistness',
+    'chiggers',
+    'trousers'
 ]
 
 names = [
     'Karen',
-    'Jerry',
+    'Jerry Seinfeld',
     'the government',
     'your mother',
-    'Whoopi Goldberg'
+    'Whoopi Goldberg',
+    'baby yoda',
+    'barack obama',
+    'Bloomberg',
 ]
 
 verbs = [
@@ -50,12 +55,20 @@ verbs = [
     'blindside',
     'boogie',
     'trip',
-    'squat'
+    'squat',
+    'study'
 ]
+occasion = ['every once in a while',
+            'all day',
+            'every day',
+            'every full moon',
+            'every third tuesday',
+            'when theyre feelin like ' + random.choice(nouns)
+            ]
 
 
 def generate_title():
-    phrases = [1, 2, 3, 4, 5]
+    phrases = [1, 2, 3, 4, 5, 6]
     phrase_choice = random.choice(phrases)
 
     if phrase_choice == 1:
@@ -66,8 +79,10 @@ def generate_title():
         return("Tiktoks to watch while I " + random.choice(verbs))
     elif phrase_choice == 4:
         return("Tiktoks that hit like " + random.choice(nouns))
-    else:
+    elif phrase_choice == 5:
         return("Tiktoks that make " + random.choice(names) + " respect the drip")
+    elif phrase_choice == 6:
+        return("Tiktoks that " + random.choice(names) + " watches " + random.choice(occasion))
 
 
 # print all phrases at once
