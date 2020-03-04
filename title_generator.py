@@ -59,19 +59,16 @@ def generate_title():
     phrase_choice = random.choice(phrases)
 
     if phrase_choice == 1:
-        print("Tiktoks that " + random.choice(verbs) + " my " + random.choice(nouns))
+        return("Tiktoks that " + random.choice(verbs) + " my " + random.choice(nouns))
     elif phrase_choice == 2:
-        print("Memes that " + random.choice(verbs) + " my " + random.choice(nouns))
+        return("Memes that " + random.choice(verbs) + " my " + random.choice(nouns))
     elif phrase_choice == 3:
-        print("Tiktoks to watch while I " + random.choice(verbs))
+        return("Tiktoks to watch while I " + random.choice(verbs))
     elif phrase_choice == 4:
-        print("Tiktoks that hit like " + random.choice(nouns))
+        return("Tiktoks that hit like " + random.choice(nouns))
     else:
-        print("Tiktoks that make " + random.choice(names) + " respect the drip")
+        return("Tiktoks that make " + random.choice(names) + " respect the drip")
 
-while True: 
-    time.sleep(0.2)
-    generate_title()
 
 # print all phrases at once
 # print("Tiktoks that " + random.choice(verbs) + " my " + random.choice(nouns))
