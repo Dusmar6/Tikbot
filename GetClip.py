@@ -15,14 +15,3 @@ def GetClip(title, urls):
             if chunk:
                 f.write(chunk)
         f.close()
-
-
-
-	
-"""
-
-		These links can be found when hovering over a video thumbnail on a hashtag page. These links can be grabbed through
-		selenium by iterating through elements and then grabbing the url that appears after hovering over them. Other methods
-		have a possibility of working as well.
-
-"""
