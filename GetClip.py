@@ -1,17 +1,20 @@
 import requests
-import os
+import os.path
+import PySimpleGUI as sg
+import icon
 
-def GetClip(title, urls):
+def GetClip(path, urls):
     
     for num in range(len(urls)):
         
+        filepath = os.path.join(path, 'tok'+str(num)+'.mp4')
         # REST API GET request, stored as a response	
         response = requests.request("GET", urls[num])
-        os.mkdir("/" + title)
         # Write contents of GET request, and store it as a .mp4 file
-        f = open(title + '/' + 'tok'+str(num)+'.mp4', 'wb')
+        f = open(filepath, 'wb')
         
         for chunk in response.iter_content(chunk_size = 255):
             if chunk:
                 f.write(chunk)
         f.close()
+    
