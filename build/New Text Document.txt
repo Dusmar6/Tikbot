@@ -1,0 +1,1 @@
+pyinstaller --onefile --icon=logo.ico --exclude matplotlib --exclude scipy --exclude pandas --noconsole --exclude numpy.py TikBot.py
