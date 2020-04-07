@@ -4,6 +4,7 @@ import time
 EMAIL = 'tikbotdev@gmail.com'
 PASSWORD = 'a$z0PzF#0DZj'
 
+# Return an encrypted string that follows the same encryption pattern for TikTok login requests
 def encryptXOR(value, key=5):
     b = value.encode()
     x = []
@@ -15,6 +16,7 @@ def encryptXOR(value, key=5):
         result += item[2:]
     return result
 
+# Return the Khronos header
 def getKhronos():
     return str(int(time.time()))
 """
