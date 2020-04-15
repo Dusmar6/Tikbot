@@ -16,38 +16,42 @@ def main_window():
     
     menu_def = [
                 ['Help', ['Creating a Collection', 'Compiling a Collection', 'Uploading a Collection'  ]],
-                ['About']] 
+                ['About']
+                ] 
     
     
  
-    tab_1_1_layout = [    [sg.T('This is inside tab 1')]] 
+    tab_1_1_layout = [  [sg.T('This is inside tab 1')]
+                        ] 
     
-    tab_1_2_layout = [ [sg.Text('Paste the links to each tiktok you would like to add to this collection, seperated by a new line.\nThese can be found by right clicking the video and going to "Inspect Element"')],
-                     [sg.Multiline(default_text='', size=(100, 10), key = 'urls')]]
+    tab_1_2_layout = [  [sg.Text('Paste the links to each tiktok you would like to add to this collection, seperated by a new line.\nThese can be found by right clicking the video and going to "Inspect Element"')],
+                         [sg.Multiline(default_text='', size=(100, 10), key = 'urls')]
+                         ]
                      
-    tab_1_layout = [       [sg.Text('\nName this collection: ')],
-                     [sg.InputText( key='collection', size= (60,1))],
-                     [sg.Text('')],
-                     [sg.TabGroup([[sg.Tab('Scrape By Hashtag', tab_1_1_layout ), sg.Tab('Add Tiktoks Individually', tab_1_2_layout)]])],   
-                     [sg.Text(' ')],
-                       [sg.Button('Create Collection'), sg.Text(" "*110)] 
-                       ]
+    tab_1_layout = [    [sg.Text('\nName this collection: ')],
+                         [sg.InputText( key='collection', size= (60,1))],
+                         [sg.Text('')],
+                         [sg.TabGroup([[sg.Tab('Scrape By Hashtag', tab_1_1_layout ), sg.Tab('Add Tiktoks Individually', tab_1_2_layout)]])],   
+                         [sg.Text(' ')],
+                         [sg.Button('Create Collection'), sg.Text(" "*110)] 
+                         ]
     
-    tab_2_layout = [       [sg.Text('\nSelect a collection to compile: ')],
-                     [sg.InputCombo(get_collection_names(), size=(20, 1))],
-                       [sg.Button('Create Collection'), sg.Text(" "*110)] 
-                       ]
+    tab_2_layout = [    [sg.Text('\nSelect a collection to compile: ')],
+                         [sg.Listbox(get_collection_names(), size=(45, 15), key = 'to_compile' ), sg.Text('')], 
+                         [sg.Text('')],
+                         [sg.Button('Compile Collection'), sg.Text(" "*110)] 
+                         ]
     
-    tab_3_layout = [       [sg.Text('Select a collection to compile: ')],
-                     [sg.InputText(key='collection', size= (60,1))],
-                       [sg.Button('Create Collection'), sg.Text(" "*110)] 
-                       ]
+    tab_3_layout = [    [sg.Text('\nSelect a collection to compile: ')],
+                         [sg.InputText(key='collection', size= (60,1))],
+                         [sg.Button('Create Collection'), sg.Text(" "*110)] 
+                         ]
     
     tab_4_layout = [      [sg.Text('\nChange your working directory: '+ ' '*60)],      
-                     [sg.Text('Your Folder', size=(20, 1), auto_size_text=False, justification='middle'), sg.InputText(get_working_directory(), key = 'dir'), sg.FolderBrowse()], 
-                [sg.Button('Save')],
-                [sg.Text('-'*130, text_color = 'light grey')]
-                                ]
+                           [sg.Text('Your Folder', size=(20, 1), auto_size_text=False, justification='middle'), sg.InputText(get_working_directory(), key = 'dir'), sg.FolderBrowse()], 
+                           [sg.Button('Save')],
+                           [sg.Text('-'*130, text_color = 'light grey')]
+                           ]
                        
 
     
@@ -60,7 +64,7 @@ def main_window():
     window = sg.Window('TikBot ', layout, icon = logo )
     while True:     
         
-        event, values = window.read()
+        event, values = window.read(timeout = 10000)
 
         if event == None: 
             break
@@ -74,12 +78,23 @@ def main_window():
                 thread = threading.Thread(target = gc.GetClip, args = (collection_path, values['urls'].split()))
                 thread.start()
                 
-            
         if event == "Compile Collection":
-            print()
+            name                = values['to compile']
+            collection_path     = os.path.join(get_collections_folderpath(), os.path.normpath(name))
+            compilation_path    = os.path.join(get_compilations_folderpath(), os.path.normpath(name))
+            if not DupeCheck(compilation_path):
+                
+                notif('Your collection has begun compiling. This may take some time depending on the size of the collection.')
+                os.makedirs(compilation_path)
+                thread = threading.Thread(target = gc.concatenate_clips, args = (compilation_path, name, get_collection_clip_paths(collection_path)))
+                thread.start()
+                
         
         if event == "Save":
             set_working_directory(os.path.normpath(values['dir']))
+            
+        
+        
                 
              
     window.close()
@@ -248,18 +263,38 @@ def set_working_directory(path):
             }
     with open('config.ini', 'w') as configfile:
         config.write(configfile)
+     
+        
         
 def get_collections_folderpath():
     return os.path.join(get_working_directory(), 'collections')
-        
 
+def get_compilations_folderpath():
+    return os.path.join(get_working_directory(), 'compilations')
+        
 def get_collection_names():
     return [f.name for f in os.scandir(get_collections_folderpath()) if f.is_dir() ]
+
+def get_collection_clip_paths(folderpath):
+    onlyfiles = [f for f in os.listdir(folderpath) if os.isfile(os.path.join(folderpath, f))]
+    
+    toks = []
+    
+    for file in onlyfiles:
+        if file[-3:] == '.mp4':
+            toks.append(file)
+            
+    if len(toks) > 30:
+        toks = toks[:30]
+        
+    return toks
+    
+
 
 
 def DupeCheck(collection):
     if os.path.exists(collection):
-        if sg.PopupYesNo('This collection already exists. Overwrite?', icon = logo) == 'Yes':
+        if sg.PopupYesNo('This collection or compilation already exists. Overwrite?', icon = logo) == 'Yes':
             shutil.rmtree(collection)
             return False
         else:
