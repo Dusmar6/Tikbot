@@ -1,0 +1,24 @@
+2020-04-15 19:14:34,293 INFO Temp dir C:\Users\dusma\AppData\Local\Temp\tmp9u8ov21_
+2020-04-15 19:14:34,293 INFO MP4s -> MPGs
+2020-04-15 19:14:34,293 INFO ffmpeg -i tok0.mp4 -qscale:v 1 C:\Users\dusma\AppData\Local\Temp\tmp9u8ov21_/tok0.mp4.mpg
+2020-04-15 19:14:34,580 INFO ffmpeg -i tok1.mp4 -qscale:v 1 C:\Users\dusma\AppData\Local\Temp\tmp9u8ov21_/tok1.mp4.mpg
+2020-04-15 19:14:34,675 INFO MPGs -> MP4
+2020-04-15 19:14:34,675 INFO ffmpeg -i concat:"C:\Users\dusma\AppData\Local\Temp\tmp9u8ov21_/tok0.mp4.mpg|C:\Users\dusma\AppData\Local\Temp\tmp9u8ov21_/tok1.mp4.mpg|" -c:v libx264 -preset slow -crf 22 -c:a aac -strict -2 C:\Users\dusma\Documents\GitHub\Tikbot\compilations\testrun.mp4
+2020-04-15 19:14:34,791 INFO Removing temp dir C:\Users\dusma\AppData\Local\Temp\tmp9u8ov21_...
+2020-04-15 19:14:34,792 INFO DONE
+2020-04-15 19:16:04,203 INFO Temp dir C:\Users\dusma\AppData\Local\Temp\tmp3jflo2nf
+2020-04-15 19:16:04,203 INFO Temp dir C:\Users\dusma\AppData\Local\Temp\tmp3jflo2nf
+2020-04-15 19:16:04,203 INFO MP4s -> MPGs
+2020-04-15 19:16:04,203 INFO MP4s -> MPGs
+2020-04-15 19:16:04,204 INFO ffmpeg -i tok0.mp4 -qscale:v 1 C:\Users\dusma\AppData\Local\Temp\tmp3jflo2nf/tok0.mp4.mpg
+2020-04-15 19:16:04,204 INFO ffmpeg -i tok0.mp4 -qscale:v 1 C:\Users\dusma\AppData\Local\Temp\tmp3jflo2nf/tok0.mp4.mpg
+2020-04-15 19:16:04,295 INFO ffmpeg -i tok1.mp4 -qscale:v 1 C:\Users\dusma\AppData\Local\Temp\tmp3jflo2nf/tok1.mp4.mpg
+2020-04-15 19:16:04,295 INFO ffmpeg -i tok1.mp4 -qscale:v 1 C:\Users\dusma\AppData\Local\Temp\tmp3jflo2nf/tok1.mp4.mpg
+2020-04-15 19:16:04,388 INFO MPGs -> MP4
+2020-04-15 19:16:04,388 INFO MPGs -> MP4
+2020-04-15 19:16:04,389 INFO ffmpeg -i concat:"C:\Users\dusma\AppData\Local\Temp\tmp3jflo2nf/tok0.mp4.mpg|C:\Users\dusma\AppData\Local\Temp\tmp3jflo2nf/tok1.mp4.mpg|" -c:v libx264 -preset slow -crf 22 -c:a aac -strict -2 C:\Users\dusma\Documents\GitHub\Tikbot\compilations\testrun.mp4
+2020-04-15 19:16:04,389 INFO ffmpeg -i concat:"C:\Users\dusma\AppData\Local\Temp\tmp3jflo2nf/tok0.mp4.mpg|C:\Users\dusma\AppData\Local\Temp\tmp3jflo2nf/tok1.mp4.mpg|" -c:v libx264 -preset slow -crf 22 -c:a aac -strict -2 C:\Users\dusma\Documents\GitHub\Tikbot\compilations\testrun.mp4
+2020-04-15 19:16:04,478 INFO Removing temp dir C:\Users\dusma\AppData\Local\Temp\tmp3jflo2nf...
+2020-04-15 19:16:04,478 INFO Removing temp dir C:\Users\dusma\AppData\Local\Temp\tmp3jflo2nf...
+2020-04-15 19:16:04,480 INFO DONE
+2020-04-15 19:16:04,480 INFO DONE
