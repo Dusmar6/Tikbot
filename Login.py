@@ -1,8 +1,8 @@
 import requests
 import time
 
-EMAIL = 'tikbotdev@gmail.com'
-PASSWORD = 'a$z0PzF#0DZj'
+EMAIL = 
+PASSWORD = 
 
 # Return an encrypted string that follows the same encryption pattern for TikTok login requests
 def encryptXOR(value, key=5):
