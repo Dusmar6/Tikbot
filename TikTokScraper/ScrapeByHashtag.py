@@ -28,12 +28,12 @@ def download_videos(response, amt, max_cursor):
         print(response.json()['body']['itemListData'][i]['itemInfos']['video']['urls'][0])
 
         # If the video about to be downloaded is more than the desired amount, do not download
-        if i + int(max_cursor) > amt:
+        if i + int(max_cursor) + 1 > amt:
             return -1
         # Write contents of GET request, and store it as a .mp4 file
-        f = open('videos/' + tag + '-' + str(i + int(max_cursor)) + '.mp4', 'wb')
+        f = open('videos/' + tag + '-' + str(i + int(max_cursor) + 1) + '.mp4', 'wb')
         try:
-            print('videos/' + tag + '-' + str(i + int(max_cursor)) + '.mp4')
+            print('videos/' + tag + '-' + str(i + int(max_cursor) + 1) + '.mp4')
             video_url = requests.get(response.json()['body']['itemListData'][i]['itemInfos']['video']['urls'][0],
                                      headers={'User-Agent': 'Googlebot'})
             for chunk in video_url.iter_content(chunk_size=255):
@@ -46,7 +46,7 @@ def download_videos(response, amt, max_cursor):
             # If the download fails, wait 5 seconds and try again
             time.sleep(5)
             try:
-                print('videos/' + tag + '-' + str(i + int(max_cursor)) + '.mp4')
+                print('videos/' + tag + '-' + str(i + int(max_cursor) + 1) + '.mp4')
                 video_url = requests.get(response.json()['body']['itemListData'][i]['itemInfos']['video']['urls'][0],
                                      headers={'User-Agent': 'Googlebot'})
                 for chunk in video_url.iter_content(chunk_size=255):
@@ -58,7 +58,7 @@ def download_videos(response, amt, max_cursor):
                 f.close()
                 # Video failed to download because the host refused the connection, delete the file so that
                 # the video splicer does not have to interact with a 0 Byte .mp4 file
-                os.remove(os.getcwd() + '/videos/' + tag + '-' + str(i + int(max_cursor)) + '.mp4')
+                os.remove(os.getcwd() + '/videos/' + tag + '-' + str(i + int(max_cursor) + 1) + '.mp4')
 
 
 def get_signature(args, amt):
@@ -129,7 +129,7 @@ def get_signature(args, amt):
 
 
 tag = 'meme'
-amt = 61
+amt = 30
 t0 = threading.Thread(target=node_server)
 t1 = threading.Thread(target=get_signature, args=('node browser.js "https://www.tiktok.com/tag/' + tag + '?lang=en"', amt,))
 
