@@ -20,7 +20,7 @@ def terminate_server():
     netstat = subprocess.run('netstat -aon | findstr 8080', capture_output=True, text=True, shell=True)
     port = netstat.stdout.split('  TCP    127.0.0.1:8080         0.0.0.0:0              LISTENING       ')[1].split('\n')[0]
     terminate_bat = "powershell.exe Stop-Process -ID %s -Force" % port
-    subprocess.Popen(terminate_bat, shell=True)
+    subprocess.run(terminate_bat, shell=True)
 
 
 def download_videos(response, amt, max_cursor):
@@ -140,3 +140,4 @@ t1.start()
 
 t0.join()
 t1.join()
+
