@@ -95,11 +95,6 @@ def get_signature(args, amt):
 
         ### GRAB VIDEO URLS
         ### DOWNLOAD VIDEOS
-        session.cookies.set('_ga', 'GA1.2.1212173610.1579663971', domain='.tiktok.com', path='/')
-        session.cookies.set('_gat_gtag_UA_144727112_1', '1', domain='.tiktok.com', path='/')
-        session.cookies.set('_gid', 'GA1.2.1867164184.1586475006', domain='.tiktok.com', path='/')
-        session.cookies.set('odin_tt', 'b6c6373cda2488cae916a12bedab02986a0ebcf2a37eac31d874d43ffbf8aa00f7163ee8f2cd17140246e3404c8e35c01e7c4279a625b44e9653171cfba56815', domain='.tiktok.com', path='/')
-
         session.headers['path'] = "/share/item/list?secUid=&id=23864&type=3&count=30&minCursor=0&maxCursor=0&shareUid=&lang=en&verifyFp=&_signature=%s" % signature
         min_cursor = '0'
         max_cursor = '0'
