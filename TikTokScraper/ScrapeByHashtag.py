@@ -2,6 +2,7 @@ import time
 import requests
 import subprocess
 import threading
+import os
 
 
 def node_server():
@@ -55,6 +56,9 @@ def download_videos(response, amt, max_cursor):
             except Exception as e:
                 print(e)
                 f.close()
+                # Video failed to download because the host refused the connection, delete the file so that
+                # the video splicer does not have to interact with a 0 Byte .mp4 file
+                os.remove(os.getcwd() + '/videos/' + tag + '-' + str(i + int(max_cursor)) + '.mp4')
 
 
 def get_signature(args, amt):
