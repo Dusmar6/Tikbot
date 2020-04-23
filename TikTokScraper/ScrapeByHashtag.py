@@ -18,9 +18,8 @@ def node_server():
 def terminate_server():
     netstat = subprocess.run('netstat -aon | findstr 8080', capture_output=True, text=True, shell=True)
     port = netstat.stdout.split('  TCP    127.0.0.1:8080         0.0.0.0:0              LISTENING       ')[1].split('\n')[0]
-    print(port)
-    p = subprocess.run('powershell.exe [Stop-Process -ID %s -Force]' % port, capture_output=True, text=True, shell=True)
-    print(p.stdout)
+    terminate_bat = "powershell.exe Stop-Process -ID %s -Force" % port
+    subprocess.Popen(terminate_bat, shell=True)
 
 
 def download_videos(response, amt, max_cursor):
@@ -34,7 +33,8 @@ def download_videos(response, amt, max_cursor):
         f = open('videos/' + tag + '-' + str(i + int(max_cursor)) + '.mp4', 'wb')
         try:
             print('videos/' + tag + '-' + str(i + int(max_cursor)) + '.mp4')
-            video_url = requests.request("GET", response.json()['body']['itemListData'][i]['itemInfos']['video']['urls'][0])
+            video_url = requests.get(response.json()['body']['itemListData'][i]['itemInfos']['video']['urls'][0],
+                                     headers={'User-Agent': 'Googlebot'})
             for chunk in video_url.iter_content(chunk_size=255):
                 if chunk:
                     f.write(chunk)
@@ -42,6 +42,19 @@ def download_videos(response, amt, max_cursor):
         except Exception as e:
             print(e)
             f.close()
+            # If the download fails, wait 5 seconds and try again
+            time.sleep(5)
+            try:
+                print('videos/' + tag + '-' + str(i + int(max_cursor)) + '.mp4')
+                video_url = requests.get(response.json()['body']['itemListData'][i]['itemInfos']['video']['urls'][0],
+                                     headers={'User-Agent': 'Googlebot'})
+                for chunk in video_url.iter_content(chunk_size=255):
+                    if chunk:
+                        f.write(chunk)
+                f.close()
+            except Exception as e:
+                print(e)
+                f.close()
 
 
 def get_signature(args, amt):
@@ -111,8 +124,8 @@ def get_signature(args, amt):
         print(p.stderr)
 
 
-tag = 'goingpro'
-amt = 50
+tag = 'meme'
+amt = 61
 t0 = threading.Thread(target=node_server)
 t1 = threading.Thread(target=get_signature, args=('node browser.js "https://www.tiktok.com/tag/' + tag + '?lang=en"', amt,))
 
