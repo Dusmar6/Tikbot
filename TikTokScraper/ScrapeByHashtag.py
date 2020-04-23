@@ -31,17 +31,17 @@ def download_videos(response, amt, max_cursor):
         if i + int(max_cursor) > amt:
             return -1
         # Write contents of GET request, and store it as a .mp4 file
-
+        f = open('videos/' + tag + '-' + str(i + int(max_cursor)) + '.mp4', 'wb')
         try:
-            f = open('videos/' + tag + '-' + str(i + int(max_cursor)) + '.mp4', 'wb')
             print('videos/' + tag + '-' + str(i + int(max_cursor)) + '.mp4')
             video_url = requests.request("GET", response.json()['body']['itemListData'][i]['itemInfos']['video']['urls'][0])
             for chunk in video_url.iter_content(chunk_size=255):
                 if chunk:
                     f.write(chunk)
             f.close()
-        except:
-            pass
+        except Exception as e:
+            print(e)
+            f.close()
 
 
 def get_signature(args, amt):
@@ -111,8 +111,8 @@ def get_signature(args, amt):
         print(p.stderr)
 
 
-tag = 'meme'
-amt = 1
+tag = 'goingpro'
+amt = 50
 t0 = threading.Thread(target=node_server)
 t1 = threading.Thread(target=get_signature, args=('node browser.js "https://www.tiktok.com/tag/' + tag + '?lang=en"', amt,))
 
