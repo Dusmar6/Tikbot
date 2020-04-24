@@ -7,7 +7,8 @@ import os
 import configparser
 import webbrowser
 import shutil
-import icon
+import icon as icon
+from ScrapeByHashtag import *
 
 
 
@@ -35,10 +36,13 @@ def main_window():
                          [sg.Text('    1. Create a collection of clips by navigating to the "Create A Collection" tab. Either paste links individually or scrape via hashtag.')],
                         [sg.Text('    2. Once you\'ve created a collection, compile your collection into a single video on the following tab')],
                          [sg.Text('    3. If you wish to upload your compilation directly from Tikbot, populate the necessary boxes, select a compilation, and click "Upload Video"!')],
-                        ]   
-    
-    
-    tab_1_1_layout = [  [sg.T('Coming Soon.')]
+                        ]
+
+    tab_1_1_layout = [  [sg.Text('Enter the hashtag you would like to scrape posts from')],
+                        [sg.InputText(key='hashtag', size=(30,1))],
+                        [sg.Text('Enter the amount of posts you would like to scrape')],
+                        [sg.InputText(key='scrape_amount', size=(30,1))],
+                        [sg.Button('Create Collection', key='scrape_collection'), sg.Text(" "*110)]
                         ] 
     
     tab_1_2_layout = [  [sg.Text('Paste the video source for each Tiktok you would like to add to this collection, seperated by a new line.\nThese can be found by right clicking the video and going to "Inspect Element"')],
@@ -98,18 +102,35 @@ def main_window():
                        
                        ]          
 
-    window = sg.Window('TikBot ', layout, icon = logo )
+    window = sg.Window('TikBotMaster ', layout, icon=logo)
     while True:     
         
-        event, values = window.read(timeout = 10000)
+        event, values = window.read(timeout=10000)
 
-        if event == None: 
+        if event is None:
             break
+
+        if event == "scrape_collection":
+            collection_path = os.path.join(get_collections_folderpath(), os.path.normpath(values['collection']).replace(" ", ""))
+            if not DupeCheck(collection_path):
+                notif('Your collection has begun downloading...')
+                os.makedirs(collection_path)
+                hastag = values['hashtag'].split()[0]
+                try:
+                    amt = int(values['scrape_amount'].split()[0])
+                    thread = threading.Thread(target=ScrapeByHashtag.run, args=(ScrapeByHashtag(), hastag, amt))
+                    thread.start()
+                except ValueError:
+                    notif('Amount of posts to scrape must be a number, try again')
+
+
+
+
         if event == 'credsite':
             webbrowser.open('https://console.developers.google.com/apis/credentials')
             
         if event == "individual":
-            collection_path =  os.path.join(get_collections_folderpath(), os.path.normpath(values['collection']).replace(" ", ""))
+            collection_path = os.path.join(get_collections_folderpath(), os.path.normpath(values['collection']).replace(" ", ""))
             if not DupeCheck(collection_path):
                 
                 notif('Your collection has begun downloading...')
@@ -127,8 +148,8 @@ def main_window():
                 thread.start()
                 
         if event == "Compile Collection":
-            name                = values['to_compile'][0]
-            collection_path     = os.path.join(get_collections_folderpath(), os.path.normpath(name))
+            name = values['to_compile'][0]
+            collection_path = os.path.join(get_collections_folderpath(), os.path.normpath(name))
             
             if not CompDupeCheck(name) and len(get_collection_clip_paths(collection_path)) > 1:
                 
@@ -385,8 +406,8 @@ def DupeCheck(collection):
 def check():
     folders = ['collections', 'compilations', 'temp']
     for folder in folders:
-        if not os.path.isdir(os.path.join(get_working_directory(),folder)):
-            os.mkdir(os.path.join(get_working_directory(),folder)) 
+        if not os.path.isdir(os.path.join(get_working_directory(), folder)):
+            os.mkdir(os.path.join(get_working_directory(), folder))
 
 
 
