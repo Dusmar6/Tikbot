@@ -115,11 +115,11 @@ def main_window():
             if not DupeCheck(collection_path):
                 notif('Your collection has begun downloading...')
                 os.makedirs(collection_path)
-                hastag = values['hashtag'].split()[0]
+                hashtag = values['hashtag'].strip()
                 try:
-                    amt = int(values['scrape_amount'].split()[0])
-                    thread = threading.Thread(target=ScrapeByHashtag.run, args=(ScrapeByHashtag(), hastag, amt))
-                    thread.start()
+                    amt = int(values['scrape_amount'].strip())
+                    s = ScrapeByHashtag()
+                    s.run('memeslol', 'meme', 30)
                 except ValueError:
                     notif('Amount of posts to scrape must be a number, try again')
 
@@ -234,18 +234,8 @@ def main_window():
                 
                 if sg.PopupYesNo(string, icon = logo) == 'Yes':
                 
-                    client = {
-                                "web": {
-                                            "client_id": values['ID'].strip(),
-                                            "client_secret": values['secret'].strip(),
-                                            "redirect_uris": [],
-                                            "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-                                            "token_uri": "https://accounts.google.com/o/oauth2/token"
-                                          }
-                                        }
-                    
-                    
-                    
+                    client = ''
+
                     filepathIN = os.path.join(get_compilations_folderpath(), values['to_up'][0])
                     
                     initialize_upload(client, filepathIN, values['title'], values['description'], tagsIN, 23, values['privacy'].lower())
