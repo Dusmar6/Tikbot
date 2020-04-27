@@ -1,7 +1,5 @@
 import requests
 import os.path
-import PySimpleGUI as sg
-import icon
 
 def GetClip(path, urls):
     
@@ -17,4 +15,9 @@ def GetClip(path, urls):
             if chunk:
                 f.write(chunk)
         f.close()
+        
+        
+        
+        
+        
     

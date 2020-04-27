@@ -8,20 +8,17 @@ import configparser
 import webbrowser
 import shutil
 import icon as icon
-from ScrapeByHashtag import *
+import ScrapeByHashtag
 
 
-
-
+#View
 
 logo = icon.logo
 
 def main_window():
     sg.theme('Default1')
     
-    menu_def = [
-                ['About']
-                ] 
+  
     
     
     instruction_tab = [  [sg.T('Welcome to Tikbot!', font = ("Helvetica", 25)), sg.Text('\nYour one-stop shop for compilation making.', font = ("Helvetica", 13))],
@@ -29,16 +26,17 @@ def main_window():
                         [sg.Text('\nGetting started:', font = ("Helvetica", 12))],
                         [sg.Text('    1. Navigate to'),  sg.Text('https://console.developers.google.com/apis/credentials', key = 'credsite', text_color = 'blue', click_submits = True), sg.Text(' and click "Create Credentials" at the top of the screen.', font = ("Helvetica", 10))],
                         [sg.Text('    2. Create an OAuth client ID. Set the Application type as "other" and name it "Tikbot".', font = ("Helvetica", 10))],
-                        [sg.Text('    3. Click on the newly created credentials and then click "Download Json". Place this .json file in the "ID" folder inside the program file.', font = ("Helvetica", 10))],
+                        [sg.Text('    3. Search for "Youtube Data" in the search bar and enable this API.', font = ("Helvetica", 10))],
+                        [sg.Text('    4. Click on the newly created credentials and then click "Download Json". Place this .json file in the "ID" folder inside the program file.', font = ("Helvetica", 10))],
                          [sg.Text('Tikbot should now be authorized to send videos to your channel. ', font = ("Helvetica", 10))],
                          
                          [sg.Text('\nMaking a compilation:', font = ("Helvetica", 12))],
                          [sg.Text('    1. Create a collection of clips by navigating to the "Create A Collection" tab. Either paste links individually or scrape via hashtag.')],
-                        [sg.Text('    2. Once you\'ve created a collection, compile your collection into a single video on the following tab')],
+                         [sg.Text('    2. Once you\'ve created a collection, compile your collection into a single video on the following tab')],
                          [sg.Text('    3. If you wish to upload your compilation directly from Tikbot, populate the necessary boxes, select a compilation, and click "Upload Video"!')],
                         ]
 
-    tab_1_1_layout = [  [sg.Text('Enter the hashtag you would like to scrape posts from')],
+    tab_1_1_layout = [  [sg.Text('\nEnter the hashtag you would  like to scrape posts from')],
                         [sg.InputText(key='hashtag', size=(30,1))],
                         [sg.Text('Enter the amount of posts you would like to scrape')],
                         [sg.InputText(key='scrape_amount', size=(30,1))],
@@ -90,19 +88,18 @@ def main_window():
                            
                            [sg.Text('-'*200, text_color = 'light grey')],
                            
-                           [ sg.Button('Save Settings')]
+                           [sg.Button('Save Settings')]
                            
                            ]
                        
 
     
     
-    layout =   [[sg.Menu(menu_def, )],
+    layout =   [
                  [sg.TabGroup([[sg.Tab('Instructions', instruction_tab )], [sg.Tab('Create A Collection', tab_1_layout )], [sg.Tab('Compile A Collection', tab_2_layout )],  [sg.Tab('Upload a Compilation to Youtube', tab_3_layout )],  [sg.Tab('Settings', tab_4_layout )]])]   
-                       
                        ]          
 
-    window = sg.Window('TikBotMaster ', layout, icon=logo)
+    window = sg.Window('TikBot ', layout, icon=logo)
     while True:     
         
         event, values = window.read(timeout=10000)
@@ -118,8 +115,8 @@ def main_window():
                 hashtag = values['hashtag'].strip()
                 try:
                     amt = int(values['scrape_amount'].strip())
-                    s = ScrapeByHashtag()
-                    s.run('memeslol', 'meme', 30)
+                    s = ScrapeByHashtag.ScrapeByHashtag()
+                    s.run(values['collection'], hashtag, amt)
                 except ValueError:
                     notif('Amount of posts to scrape must be a number, try again')
 
@@ -261,6 +258,12 @@ def notif(msg):
 def pop(msg = 'Something went wrong'):
     sg.popup('Error:', msg)
     
+    
+    
+    
+    
+#controller
+
 def write_default_config():
     config = configparser.ConfigParser()
     config['config']= {}
@@ -584,7 +587,7 @@ from string import ascii_letters, digits
 
 import wsgiref.simple_server
 import wsgiref.util
-import webbrowser
+
 import google.auth.transport.requests
 import google.oauth2.credentials
 from six.moves import input
